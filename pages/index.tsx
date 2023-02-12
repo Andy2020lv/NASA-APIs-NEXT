@@ -1,8 +1,11 @@
 import Head from "next/head";
 import Image from "next/image";
+import Link from "next/link";
+import Router from "next/router";
+import { send } from "process";
 import { useState, useEffect } from "react";
 import styles from "../styles/Home.module.css";
-import Events from "../components/Events";
+import Events from "./Events";
 
 type EONETEvent = {
   events: [
@@ -45,16 +48,26 @@ export default function Home() {
   !nasaData && <div>Loading...</div>;
   console.log({ nasaData });
 
-  let nasaElements = nasaData?.events.map((element) => (
-    <Events
-      key={element.id}
-      category={category!}
-      coordinates={element.geometry[0].coordinates}
-      id={element.id}
-      date={element.geometry[0].date}
-      title={element.title}
-    ></Events>
-  ));
+  const sendProps = () => {
+    Router.push({
+      pathname: "/Events",
+      query: { data: JSON.stringify(nasaData?.events) },
+    });
+  };
+
+  const props = { someProp: nasaData?.events };
+
+  // let nasaElements = nasaData?.events.map((element) => (
+  //   <Events
+  //     key={element.id}
+  //     category={category!}
+  //     coordinates={element.geometry[0].coordinates}
+  //     id={element.id}
+  //     date={element.geometry[0].date}
+  //     title={element.title}
+  //   />
+  // ));
+  // console.log(nasaElements);
 
   return (
     <>
@@ -113,7 +126,7 @@ export default function Home() {
                 <a
                   href="##"
                   className="dropdown-item"
-                  onClick={() => setLimit(5)}
+                  onClick={() => setLimit(6)}
                 >
                   6
                 </a>
@@ -138,6 +151,13 @@ export default function Home() {
               </li>
             </ul>
           </div>
+          <nav>
+            {/* Might need to change the Link tag to an anchor tag because of some issue when going back in page history opn browser. */}
+            <Link href="/Events" onClick={() => sendProps()}>
+              See events
+            </Link>
+          </nav>
+          {/* {nasaElements} */}
         </div>
       </main>
     </>

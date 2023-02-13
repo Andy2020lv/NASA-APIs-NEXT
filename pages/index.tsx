@@ -1,73 +1,39 @@
 import Head from "next/head";
-import Image from "next/image";
 import Link from "next/link";
 import Router from "next/router";
-import { send } from "process";
 import { useState, useEffect } from "react";
 import styles from "../styles/Home.module.css";
-import Events from "./Events";
+import { createSlice } from "@reduxjs/toolkit";
 
-type EONETEvent = {
-  events: [
-    {
-      id: string;
-      title: string;
-      geometry: [
-        {
-          date: string;
-          coordinates: [string, string];
-        }
-      ];
-    }
-  ];
-};
+// export interface CounterState {
+//   events: [Object];
+// }
 
 export default function Home() {
-  const [category, setCategory] = useState<String>("wildfires");
-  const [limit, setLimit] = useState<Number>(6);
-  const [nasaData, setNasaData] = useState<EONETEvent>();
+  const [category, setCategory] = useState<string>("wildfires");
+  const [limit, setLimit] = useState<number>(6);
 
-  const NASA_API_KEY = "ijz7SNQHjWKEmWblGRlmfPq3nCPhg6LuCNyjZcgb";
-  const EONET_API_URL = `https://eonet.gsfc.nasa.gov/api/v3/events?start=2005-01-01&end=2021-12-31&limit=${limit}&category=${category}&key=`;
+  // console.log({ nasaData });
+  // const initialState: CounterState = {
+  //   events: [{}],
+  // };
 
-  // Fetch the data
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(EONET_API_URL + NASA_API_KEY);
-        const data = await response.json();
-        setNasaData(data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchData();
-  }, [category, limit, EONET_API_URL]);
-
-  // Return loading while data is not fetched
-  !nasaData && <div>Loading...</div>;
-  console.log({ nasaData });
+  // export const nasaDataContxt = createSlice({
+  //   name: "nasaDataContxt",
+  //   initialState,
+  //   reducers: {
+  //     getData: (state) => {
+  //       state.events = nasaData!.events;
+  //     },
+  //   },
+  // });
 
   const sendProps = () => {
     Router.push({
       pathname: "/Events",
-      query: { data: JSON.stringify(nasaData?.events) },
+      query: { limit, category },
     });
   };
-
-  const props = { someProp: nasaData?.events };
-
-  // let nasaElements = nasaData?.events.map((element) => (
-  //   <Events
-  //     key={element.id}
-  //     category={category!}
-  //     coordinates={element.geometry[0].coordinates}
-  //     id={element.id}
-  //     date={element.geometry[0].date}
-  //     title={element.title}
-  //   />
-  // ));
-  // console.log(nasaElements);
 
   return (
     <>
@@ -157,7 +123,6 @@ export default function Home() {
               See events
             </Link>
           </nav>
-          {/* {nasaElements} */}
         </div>
       </main>
     </>

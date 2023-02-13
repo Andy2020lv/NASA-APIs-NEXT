@@ -1,84 +1,85 @@
-import { setegid } from "process";
-import Image from "next/image";
-import styles from "../styles/events.module.css";
-import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { type } from "os";
+import EventsComp from "../components/EventsComp";
+import { useState, useEffect } from "react";
 type Props = {
-  category: String;
-  coordinates: String[];
-  id: String;
-  date: String;
-  title: String;
+  category?: string | string[] | undefined;
+  coordinates?: string[];
+  id: string;
+  date?: string;
+  title: string;
+  key: string | number;
+  geometry: [string, string];
 };
 
-type earthDataType = {
-  id: string;
-  resourse: {
-    dataset: string;
-    planet: string;
-  };
-  url: string;
+type EONETEvent = {
+  events: [
+    {
+      id: string;
+      title: string;
+      geometry: [
+        {
+          date: string;
+          coordinates: [string, string];
+        }
+      ];
+    }
+  ];
 };
-let lon: String;
-let lat: String;
+
 export default function Events() {
   const router = useRouter();
-  // typeof router.query.data === "string"
-  //   ? console.log(JSON.parse(router.query.data))
-  //   : console.log("This is not a string", typeof router.query.data);
-  const data =
-    typeof router.query.data === "string" ? JSON.parse(router.query.data) : "";
 
-  console.log({ data });
-  const {
-    query: { category, coordinates, id, date, title },
-  } = router;
-  console.log(data[0]?.categories[0].id);
-  if (Array.isArray(router.query.coordinates)) {
-    [lon, lat] = router.query.coordinates!.map((x: String) => x);
-  }
-  if (typeof date === "string") {
-    const ParsedDate = date.slice(0, 10);
-  }
+  const category: string | string[] | undefined = router.query.category;
 
-  const EARTH_API_URL = `https://api.nasa.gov/planetary/earth/assets?lon=${lon}&lat=${lat}&date=${date}&dim=0.15&&api_key=`;
+  const limit = router.query.limit;
+
+  const [nasaData, setNasaData] = useState<EONETEvent>();
+
   const NASA_API_KEY = "ijz7SNQHjWKEmWblGRlmfPq3nCPhg6LuCNyjZcgb";
+  const EONET_API_URL = `https://eonet.gsfc.nasa.gov/api/v3/events?start=2005-01-01&end=2021-12-31&limit=${limit}&category=${category}&key=`;
 
-  const [earthData, setEarthData] = useState<earthDataType>();
-
+  // Fetch the data
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(EARTH_API_URL + NASA_API_KEY);
+        const response = await fetch(EONET_API_URL + NASA_API_KEY);
         const data = await response.json();
-        setEarthData(data);
+        setNasaData(data);
       } catch (error) {
-        console.error(error);
+        console.log(error);
       }
     };
     fetchData();
-  }, [EARTH_API_URL]);
-  if (!earthData) {
-    return <p>Loading...</p>;
-  }
-  const endoceImg = encodeURIComponent(earthData.url);
+  }, [category, limit, EONET_API_URL]);
+
+  // Return loading while data is not fetched
+  !nasaData && <div>Loading...</div>;
+
+  // const data =
+  //   typeof router.query.data === "string" ? JSON.parse(router.query.data) : "";
+
+  const nasaEvents = nasaData?.events.map((element, index) => (
+    <EventsComp
+      key={+element.id + index}
+      category={category}
+      id={element.id}
+      coordinates={element.geometry[0].coordinates}
+      date={element.geometry[0].date}
+      title={element.title}
+    />
+  ));
+
+  // console.log({ data });
+
+  // console.log(data[0]?.categories[0].id);
+  // if (Array.isArray(router.query.coordinates)) {
+  //   [lon, lat] = data.coordinates!.map((x: String) => x);
+  // }
+  // if (typeof data.geometry.date === "string") {
+  //   ParsedDate = data.geometry.date.slice(0, 10);
+  // }
+
   // console.log({ earthData });
   // console.log(router.query.data);
-
-  return (
-    <div className="col-lg-4">
-      <div className="events">
-        <h1>{title}</h1>
-        <Image
-          src={`${earthData.url}`}
-          className={styles.sateliteImg}
-          alt="event-img"
-          width={200}
-          height={200}
-        ></Image>
-        <h1>props: {router.query.data}</h1>
-      </div>
-    </div>
-  );
+  return <div className="row">{nasaEvents}</div>;
 }

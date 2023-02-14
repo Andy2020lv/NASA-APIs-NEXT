@@ -1,0 +1,48 @@
+.picDayContainer {
+  padding: 1rem;
+  text-align: center;
+}
+
+.picDayImg {
+  width: 100%;
+}
+
+.picDayExp {
+  margin-top: 2rem;
+  font-weight: 300;
+  line-height: 1.8;
+  text-align: left;
+}
+
+.picDayLink {
+  color: #3d3c42;
+  margin-top: 3rem;
+  font-size: 1.5rem;
+  font-weight: 500;
+  /* margin-top: 2rem !important; */
+}
+@media (min-width: 40em) {
+  .picDayContainer {
+    padding: 1rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+  }
+  .picDayExpImg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 2rem 0 2rem;
+    margin-bottom: 1rem;
+  }
+  .picDayImg {
+    width: 30%;
+  }
+  .picDayExp {
+    max-width: 30rem;
+    margin-right: 4rem;
+  }
+  .picDayLink {
+    margin: 0;
+  }
+}

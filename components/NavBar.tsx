@@ -1,31 +1,34 @@
 import Router from "next/router";
 import { useState, useEffect } from "react";
 import styles from "../styles/Home.module.css";
-import styles2 from "../styles/events.module.css";
 import Link from "next/link";
+import { send } from "process";
+type Props = {
+  limit?: number;
+  setLimit?: Function;
+  category?: string;
+  setCategory?: Function;
+};
 
-export default function NavBar(props) {
+export default function NavBar(props: Props) {
   const [category, setCategory] = useState<string>("wildfires");
-  const [limit, setLimit] = useState<number>(props.limit);
+  const [limit, setLimit] = useState<number>(props.limit!);
 
-  //   if (limit > 24) {
-  //     setLimit(24);
-  //   }
   const sendProps = () => {
     Router.push({
       pathname: "/Events",
       query: { limit, category },
     });
   };
-  useEffect(() => {
-    sendProps();
-  }, [props.limit, limit]);
+  //   useEffect(() => {
+  //     sendProps();
+  //   }, [sendProps]);
 
   return (
     <div className={styles.navigation}>
       <div className="btn-group">
         <button
-          className={`btn btn-secondary dropdown-toggle ${styles2.btn}`}
+          className={`btn btn-secondary dropdown-toggle ${styles.btn}`}
           type="button"
           data-bs-toggle="dropdown"
           data-bs-auto-close="true"
@@ -40,7 +43,10 @@ export default function NavBar(props) {
             <a
               href="##"
               className="dropdown-item"
-              onClick={() => setCategory("wildfires")}
+              onClick={() => {
+                props.setCategory!("wildfires");
+                sendProps();
+              }}
             >
               Wildfire
             </a>
@@ -50,7 +56,10 @@ export default function NavBar(props) {
             <a
               href="##"
               className="dropdown-item"
-              onClick={() => setCategory("volcanoes")}
+              onClick={() => {
+                props.setCategory!("volcanoes");
+                sendProps();
+              }}
             >
               Volcanoes
             </a>
@@ -59,7 +68,7 @@ export default function NavBar(props) {
       </div>
       <div className="dropdown">
         <button
-          className={`btn btn-secondary dropdown-toggle ${styles2.btn}`}
+          className={`btn btn-secondary dropdown-toggle ${styles.btn}`}
           type="button"
           data-bs-toggle="dropdown"
           aria-expanded="false"
@@ -71,7 +80,10 @@ export default function NavBar(props) {
             <a
               href="##"
               className="dropdown-item"
-              onClick={() => props.setLimit(6)}
+              onClick={() => {
+                props.setLimit!(6);
+                sendProps();
+              }}
             >
               6
             </a>
@@ -80,7 +92,10 @@ export default function NavBar(props) {
             <a
               href="##"
               className="dropdown-item"
-              onClick={() => props.setLimit(12)}
+              onClick={() => {
+                props.setLimit!(12);
+                sendProps();
+              }}
             >
               12
             </a>
@@ -89,7 +104,10 @@ export default function NavBar(props) {
             <a
               href="##"
               className="dropdown-item"
-              onClick={() => props.setLimit(24)}
+              onClick={() => {
+                props.setLimit!(24);
+                sendProps();
+              }}
             >
               24
             </a>
@@ -99,11 +117,18 @@ export default function NavBar(props) {
       <nav>
         <ul>
           <li>
-            <div className={styles2.seeEventsContainer}>
-              <Link className={styles2.seeEvents} href="/Events">
+            <div className={styles.seeEventsContainer}>
+              <Link
+                onClick={() => {
+                  sendProps();
+                  props.setLimit!(6);
+                }}
+                className={styles.seeEvents}
+                href="/Events"
+              >
                 See events
               </Link>
-              <Link className={styles2.seeEvents} href="/Events">
+              <Link className={styles.seeEvents} href="/PicDay">
                 Pic/day
               </Link>
             </div>

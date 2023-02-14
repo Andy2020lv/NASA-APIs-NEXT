@@ -3,6 +3,8 @@ import Link from "next/link";
 import Router from "next/router";
 import { useState, useEffect } from "react";
 import styles from "../styles/Home.module.css";
+import NavBar from "../components/NavBar";
+import PicDay from "./PicDay";
 
 // export interface CounterState {
 //   events: [Object];
@@ -27,87 +29,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <main>
-        <div className={styles.navigation}>
-          <div className="btn-group">
-            <button
-              className="btn btn-secondary dropdown-toggle"
-              type="button"
-              data-bs-toggle="dropdown"
-              data-bs-auto-close="true"
-              aria-expanded="false"
-              style={{ margin: "1rem" }}
-            >
-              Categories
-            </button>
-
-            <ul className="dropdown-menu">
-              <li>
-                <a
-                  href="##"
-                  className="dropdown-item"
-                  onClick={() => setCategory("wildfires")}
-                >
-                  Wildfire
-                </a>
-              </li>
-
-              <li>
-                <a
-                  href="##"
-                  className="dropdown-item"
-                  onClick={() => setCategory("volcanoes")}
-                >
-                  Volcanoes
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div className="dropdown">
-            <button
-              className="btn btn-secondary dropdown-toggle"
-              type="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              Amount of events
-            </button>
-            <ul className="dropdown-menu">
-              <li>
-                <a
-                  href="##"
-                  className="dropdown-item"
-                  onClick={() => setLimit(6)}
-                >
-                  6
-                </a>
-              </li>
-              <li>
-                <a
-                  href="##"
-                  className="dropdown-item"
-                  onClick={() => setLimit(12)}
-                >
-                  12
-                </a>
-              </li>
-              <li>
-                <a
-                  href="##"
-                  className="dropdown-item"
-                  onClick={() => setLimit(24)}
-                >
-                  24
-                </a>
-              </li>
-            </ul>
-          </div>
-          <nav>
-            {/* Might need to change the Link tag to an anchor tag because of some issue when going back in page history opn browser. */}
-            <Link href="/Events" onClick={() => sendProps()}>
-              See events
-            </Link>
-          </nav>
-        </div>
+        <NavBar />
       </main>
     </>
   );

@@ -8,3 +8,31 @@
   padding: 5rem 0.5rem;
   background-image: url("https://www.popsci.com/uploads/2022/07/12/carina-nebula-james-webb-space-telescope-camera.jpg?auto=webp&width=1440&height=853.92");
 }
+
+.seeEventsContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.seeEvents {
+  font-weight: 800;
+  font-size: 1.5rem;
+  color: #fefcf3;
+  border: 0.2rem solid;
+  padding: 10px 20px;
+  border-color: #141619;
+}
+.seeEvents:hover {
+  background-color: black;
+  border-color: #fefcf3;
+  color: white;
+}
+
+.seeEvents:active {
+  background-color: black;
+}
+
+.btn {
+  background-color: black !important;
+  height: 3rem;
+}

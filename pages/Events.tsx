@@ -12,6 +12,8 @@ type Props = {
   geometry: [string, string];
 };
 
+//  type isValidLimit = 6 | 12 | 24
+
 type EONETEvent = {
   events: [
     {
@@ -31,10 +33,14 @@ type EONETEvent = {
 export default function Events() {
   const router = useRouter();
 
-  const category: string = router.query.category as string;
+  const [category, setCategory] = useState(router.query.category as string);
 
   const [limit, setLimit] = useState<number>(
-    router.query.limit <= 24 ? router.query.limit : 6
+    typeof router.query.limit === "string" && !isNaN(+router.query.limit)
+      ? +router.query.limit <= 24
+        ? +router.query.limit
+        : 24
+      : 6
   );
 
   const [nasaData, setNasaData] = useState<EONETEvent>();
@@ -72,11 +78,22 @@ export default function Events() {
       title={element.title}
     />
   ));
-
+  console.log({ limit });
   return (
     <>
-      <NavBar limit={limit} setLimit={setLimit} />
-      <div className="row">{nasaEvents}</div>
+      <NavBar
+        category={category}
+        setCategory={setCategory}
+        limit={limit}
+        setLimit={setLimit}
+      />
+      <div className="row">
+        {" "}
+        <h1 style={{ textAlign: "center" }}>
+          Remember to enter a limit and category
+        </h1>
+        {nasaEvents}
+      </div>
     </>
   );
 }

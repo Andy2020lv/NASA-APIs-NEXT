@@ -47,7 +47,7 @@
   }
 }
 
-.seeEventsContainer {
+/* .seeEventsContainer {
   display: flex;
   flex-direction: column;
 }
@@ -73,7 +73,7 @@
 .btn {
   background-color: black !important;
   height: 3rem;
-}
+} */
 
 /* ////////////// Event /////////////////// */
 

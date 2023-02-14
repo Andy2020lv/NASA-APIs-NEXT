@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ["earthengine.googleapis.com"],
+    domains: ["earthengine.googleapis.com", "apod.nasa.gov"],
   },
 };
 

@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import EventsComp from "../components/EventsComp";
 import { useState, useEffect } from "react";
+import NavBar from "../components/NavBar";
 type Props = {
   category?: string | string[] | undefined;
   coordinates?: string[];
@@ -16,6 +17,7 @@ type EONETEvent = {
     {
       id: string;
       title: string;
+      category: string;
       geometry: [
         {
           date: string;
@@ -29,9 +31,11 @@ type EONETEvent = {
 export default function Events() {
   const router = useRouter();
 
-  const category: string | string[] | undefined = router.query.category;
+  const category: string = router.query.category as string;
 
-  const limit = router.query.limit;
+  const [limit, setLimit] = useState<number>(
+    router.query.limit <= 24 ? router.query.limit : 6
+  );
 
   const [nasaData, setNasaData] = useState<EONETEvent>();
 
@@ -69,17 +73,10 @@ export default function Events() {
     />
   ));
 
-  // console.log({ data });
-
-  // console.log(data[0]?.categories[0].id);
-  // if (Array.isArray(router.query.coordinates)) {
-  //   [lon, lat] = data.coordinates!.map((x: String) => x);
-  // }
-  // if (typeof data.geometry.date === "string") {
-  //   ParsedDate = data.geometry.date.slice(0, 10);
-  // }
-
-  // console.log({ earthData });
-  // console.log(router.query.data);
-  return <div className="row">{nasaEvents}</div>;
+  return (
+    <>
+      <NavBar limit={limit} setLimit={setLimit} />
+      <div className="row">{nasaEvents}</div>
+    </>
+  );
 }

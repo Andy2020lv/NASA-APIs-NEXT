@@ -1,3 +1,4 @@
+/* ////////////// Events /////////////////// */
 .sateliteImg {
   width: 70%;
   margin-bottom: 1rem;
@@ -18,4 +19,72 @@
   display: flex;
   gap: 10px;
   justify-content: center;
+}
+
+.goTo {
+  border: 0.2rem solid;
+  padding: 10px 20px;
+  border-color: white;
+  color: black;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.goTo:hover {
+  border-color: black;
+  color: black;
+  background-color: white;
+}
+
+@media (min-width: 40em) {
+  .events {
+    text-align: left;
+    width: 19rem;
+  }
+  .sateliteImg {
+    width: 80% !important;
+    margin-bottom: 1rem;
+  }
+}
+
+.seeEventsContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.seeEvents {
+  font-weight: 800;
+  font-size: 1.5rem;
+  color: #fefcf3;
+  border: 0.2rem solid;
+  padding: 10px 20px;
+  border-color: #141619;
+}
+.seeEvents:hover {
+  background-color: black;
+  border-color: #fefcf3;
+  color: white;
+}
+
+.seeEvents:active {
+  background-color: black;
+}
+
+.btn {
+  background-color: black !important;
+  height: 3rem;
+}
+
+/* ////////////// Event /////////////////// */
+
+.event {
+  background-color: #f9f2ed;
+  color: black;
+  height: 80vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-top: 2rem;
 }

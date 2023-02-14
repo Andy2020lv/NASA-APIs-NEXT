@@ -1,13 +1,13 @@
 import Image from "next/image";
 import styles from "../styles/events.module.css";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
+import Link from "next/link";
 type Props = {
-  category: String;
-  coordinates: String[];
-  id: String;
-  date: String;
-  title: String;
+  category: string;
+  coordinates: string[];
+  id: string;
+  date: string;
+  title: string;
 };
 
 type earthDataType = {
@@ -18,12 +18,12 @@ type earthDataType = {
   };
   url: string;
 };
-let lon: String;
-let lat: String;
+let lon: string;
+let lat: string;
 let ParsedDate: String;
 export default function EventsComp(props: Props) {
   if (Array.isArray(props.coordinates)) {
-    [lon, lat] = props.coordinates!.map((x: String) => x);
+    [lon, lat] = props.coordinates!.map((x: string) => x);
   }
   if (typeof props.date === "string") {
     ParsedDate = props.date.slice(0, 10);
@@ -49,19 +49,19 @@ export default function EventsComp(props: Props) {
   if (!earthData) {
     return <p>Loading...</p>;
   }
-  const endoceImg = encodeURIComponent(earthData.url);
-  // console.log({ earthData });
-  // console.log(router.query.data);
-  console.log(earthData);
+  const encodeImg: string = encodeURIComponent(earthData.url);
+  let title = props.title;
+  let id = props.id;
+
   return (
     <div className="col-lg-4">
       <div className={styles.events}>
-        <h1>{props.title}</h1>
+        <h1 style={{ maxWidth: "300px" }}>{props.title}</h1>
         <Image
           src={`${earthData.url}`}
           className={styles.sateliteImg}
           alt="event-img"
-          width={200}
+          width={300}
           height={200}
         ></Image>
         <div className={styles.eventsCoordinates}>
@@ -70,6 +70,17 @@ export default function EventsComp(props: Props) {
           <p>Lon: {lon}</p>
         </div>
         <p>Date: {props.date}</p>
+        <nav>
+          <Link
+            className={styles.goTo}
+            href={{
+              pathname: "/[event]",
+              query: { event: 0, lat, lon, encodeImg, title, id },
+            }}
+          >
+            Go to the image
+          </Link>
+        </nav>
       </div>
     </div>
   );

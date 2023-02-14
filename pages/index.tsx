@@ -3,7 +3,6 @@ import Link from "next/link";
 import Router from "next/router";
 import { useState, useEffect } from "react";
 import styles from "../styles/Home.module.css";
-import { createSlice } from "@reduxjs/toolkit";
 
 // export interface CounterState {
 //   events: [Object];
@@ -12,21 +11,6 @@ import { createSlice } from "@reduxjs/toolkit";
 export default function Home() {
   const [category, setCategory] = useState<string>("wildfires");
   const [limit, setLimit] = useState<number>(6);
-
-  // console.log({ nasaData });
-  // const initialState: CounterState = {
-  //   events: [{}],
-  // };
-
-  // export const nasaDataContxt = createSlice({
-  //   name: "nasaDataContxt",
-  //   initialState,
-  //   reducers: {
-  //     getData: (state) => {
-  //       state.events = nasaData!.events;
-  //     },
-  //   },
-  // });
 
   const sendProps = () => {
     Router.push({

@@ -4,7 +4,7 @@
 }
 
 .picDayImg {
-  width: 100%;
+  width: 100% !important;
 }
 
 .picDayExp {
@@ -36,11 +36,12 @@
     margin-bottom: 1rem;
   }
   .picDayImg {
-    width: 30%;
+    width: 50% !important;
   }
   .picDayExp {
     max-width: 30rem;
-    margin-right: 4rem;
+    min-width: 20rem;
+    margin-right: 2rem;
   }
   .picDayLink {
     margin: 0;

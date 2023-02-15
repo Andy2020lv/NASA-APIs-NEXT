@@ -44,7 +44,7 @@ export default function NavBar(props: Props) {
               href="##"
               className="dropdown-item"
               onClick={() => {
-                props.setCategory!("wildfires");
+                props.setCategory && props.setCategory!("wildfires");
                 sendProps();
               }}
             >
@@ -57,7 +57,7 @@ export default function NavBar(props: Props) {
               href="##"
               className="dropdown-item"
               onClick={() => {
-                props.setCategory!("volcanoes");
+                props.setCategory && props.setCategory!("volcanoes");
                 sendProps();
               }}
             >
@@ -81,7 +81,7 @@ export default function NavBar(props: Props) {
               href="##"
               className="dropdown-item"
               onClick={() => {
-                props.setLimit!(6);
+                props.setLimit && props.setLimit(6);
                 sendProps();
               }}
             >
@@ -93,7 +93,7 @@ export default function NavBar(props: Props) {
               href="##"
               className="dropdown-item"
               onClick={() => {
-                props.setLimit!(12);
+                props.setLimit && props.setLimit(12);
                 sendProps();
               }}
             >
@@ -105,7 +105,7 @@ export default function NavBar(props: Props) {
               href="##"
               className="dropdown-item"
               onClick={() => {
-                props.setLimit!(24);
+                props.setLimit && props.setLimit(24);
                 sendProps();
               }}
             >
@@ -118,14 +118,7 @@ export default function NavBar(props: Props) {
         <ul>
           <li>
             <div className={styles.seeEventsContainer}>
-              <Link
-                onClick={() => {
-                  sendProps();
-                  props.setLimit!(6);
-                }}
-                className={styles.seeEvents}
-                href="/Events"
-              >
+              <Link className={styles.seeEvents} href="/Events">
                 See events
               </Link>
               <Link className={styles.seeEvents} href="/PicDay">

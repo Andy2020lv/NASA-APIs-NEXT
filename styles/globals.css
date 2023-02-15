@@ -3,3 +3,8 @@
   margin: 0;
   height: 100%;
 }
+
+html {
+  background-color: #f9f2ed;
+  overflow-x: hidden;
+}

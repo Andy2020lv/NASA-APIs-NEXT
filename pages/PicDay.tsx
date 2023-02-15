@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import styles from "../styles/PicDay.module.css";
+import styles2 from "../styles/events.module.css";
 import NavBar from "../components/NavBar";
 type APOD = {
   date: string;
@@ -53,12 +54,13 @@ export default function PicDay() {
             src={response.url}
             alt={response.title}
             width={400}
-            height={400}
+            height={200}
+            layout="responsive"
           />
         </div>
         <div className={styles.picDayLink}>
           <a
-            className="go-to"
+            className={styles2.goTo}
             rel="noreferrer"
             target="_blank"
             href={response.url}

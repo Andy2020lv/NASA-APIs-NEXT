@@ -54,9 +54,11 @@ export default function EventsComp(props: Props) {
   let id = props.id;
 
   return (
-    <div className="col-lg-4">
+    <div className="col-lg-4 col-md-6">
       <div className={styles.events}>
-        <h1 style={{ maxWidth: "300px" }}>{props.title}</h1>
+        <h1 style={{ maxWidth: "300px", textAlign: "center" }}>
+          {props.title}
+        </h1>
         <Image
           src={`${earthData.url}`}
           className={styles.sateliteImg}

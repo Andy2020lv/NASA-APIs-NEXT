@@ -46,7 +46,9 @@ export default function Events() {
   const [nasaData, setNasaData] = useState<EONETEvent>();
 
   const NASA_API_KEY = "ijz7SNQHjWKEmWblGRlmfPq3nCPhg6LuCNyjZcgb";
-  const EONET_API_URL = `https://eonet.gsfc.nasa.gov/api/v3/events?start=2005-01-01&end=2021-12-31&limit=${limit}&category=${category}&key=`;
+  const EONET_API_URL = `https://eonet.gsfc.nasa.gov/api/v3/events?start=2005-01-01&end=2021-12-31&limit=${
+    limit ? limit : 6
+  }&category=${category ? category : "wildfires"}&key=`;
 
   // Fetch the data
   useEffect(() => {
@@ -87,13 +89,7 @@ export default function Events() {
         limit={limit}
         setLimit={setLimit}
       />
-      <div className="row">
-        {" "}
-        <h1 style={{ textAlign: "center" }}>
-          Remember to enter a limit and category
-        </h1>
-        {nasaEvents}
-      </div>
+      <div className="row"> {nasaEvents}</div>
     </>
   );
 }

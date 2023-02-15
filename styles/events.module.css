@@ -1,4 +1,15 @@
 /* ////////////// Events /////////////////// */
+@media (min-width: 40em) {
+  .events {
+    text-align: left;
+    width: 19rem;
+  }
+  .sateliteImg {
+    width: 80% !important;
+    margin-bottom: 1rem;
+  }
+}
+
 .sateliteImg {
   width: 70%;
   margin-bottom: 1rem;
@@ -34,17 +45,6 @@
   border-color: black;
   color: black;
   background-color: white;
-}
-
-@media (min-width: 40em) {
-  .events {
-    text-align: left;
-    width: 19rem;
-  }
-  .sateliteImg {
-    width: 80% !important;
-    margin-bottom: 1rem;
-  }
 }
 
 /* .seeEventsContainer {
@@ -87,4 +87,5 @@
   align-items: center;
   text-align: center;
   padding-top: 2rem;
+  margin-bottom: 2rem;
 }

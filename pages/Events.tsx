@@ -70,9 +70,9 @@ export default function Events() {
   // const data =
   //   typeof router.query.data === "string" ? JSON.parse(router.query.data) : "";
 
-  const nasaEvents = nasaData?.events.map((element, index) => (
+  const nasaEvents = nasaData?.events.map((element) => (
     <EventsComp
-      key={+element.id + index}
+      key={element.id}
       category={category}
       id={element.id}
       coordinates={element.geometry[0].coordinates}

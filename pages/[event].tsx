@@ -9,12 +9,16 @@ type Props = {
 export default function Event(props: Props) {
   const router = useRouter();
   const { title, id } = router.query;
-  const [lat, lon, ParsedDate] = router.query.event!.split(",");
+  // const [lat, lon, ParsedDate] = router.query.event!.split(",");
+  const event = router.query.event;
+  const [lat, lon, ParsedDate] = Array.isArray(event)
+    ? event[0].split(",")
+    : event!.split(",");
 
-  console.log({ router });
+  // console.log({ router });
   // const url: string = decodeURIComponent(encodeImg as string);
   const zoom = 7000;
-  console.log("This is the url" + props.imgUrl);
+  // console.log("This is the url" + props.imgUrl);
   return (
     <>
       {" "}
@@ -46,10 +50,10 @@ export default function Event(props: Props) {
   );
 }
 
-export async function getStaticProps(context) {
+export async function getStaticProps(context: any) {
   // TRY TO USE USEROUTER TO CATCH THE VARIABLES FROM CONTEXT.QUERY
   const [lat, lon, ParsedDate] = context.params.event.split(",");
-  console.log({ lat, lon, ParsedDate });
+  // console.log({ lat, lon, ParsedDate });
   // console.log(context.params.event.toString().split(","));
   console.log({ context });
   console.log(context.params);
@@ -67,15 +71,43 @@ export async function getStaticProps(context) {
 }
 
 export async function getStaticPaths() {
+  const NASA_API_KEY = "ijz7SNQHjWKEmWblGRlmfPq3nCPhg6LuCNyjZcgb";
+
+  const wildfiresURL = `https://eonet.gsfc.nasa.gov/api/v3/events?start=2005-01-01&end=2021-12-31&limit=${24}&category=${"wildfires"}&key=${NASA_API_KEY}`;
+  const volcanoesURL = `https://eonet.gsfc.nasa.gov/api/v3/events?start=2005-01-01&end=2021-12-31&limit=${24}&category=${"volcanoes"}&key=${NASA_API_KEY}`;
+
+  const [wildfiresResponse, volcanoesResponse] = await Promise.all([
+    fetch(wildfiresURL),
+    fetch(volcanoesURL),
+  ]);
+
+  const wildfiresData = await wildfiresResponse.json();
+  const volcanoesData = await volcanoesResponse.json();
+
+  const wildfiresPaths = wildfiresData.events.map((event: any) => {
+    return {
+      params: {
+        event: `${event.geometry[0].coordinates[1]},${
+          event.geometry[0].coordinates[0]
+        },${event.geometry[0].date.slice(0, 10)}`,
+      },
+    };
+  });
+
+  const volcanoesPaths = volcanoesData.events.map((event: any) => {
+    return {
+      params: {
+        event: `${event.geometry[0].coordinates[1]},${
+          event.geometry[0].coordinates[0]
+        },${event.geometry[0].date.slice(0, 10)}`,
+      },
+    };
+  });
+
+  const paths = [...wildfiresPaths, ...volcanoesPaths];
+
   return {
-    paths: [
-      { params: { event: "39.95983,-105.19282,2021-12-30" } },
-      { params: { event: "34.396954841,-117.729843629,2021-12-12" } },
-      { params: { event: "33.417201559,-110.861196043,2021-11-27" } },
-      { params: { event: "352.076,-176.13,2021-10-19" } },
-      { params: { event: "-7.54,110.446,2021-01-07" } },
-      { params: { event: "29.63,129.71,2020-07-12" } },
-    ],
-    fallback: true,
+    paths,
+    fallback: false,
   };
 }

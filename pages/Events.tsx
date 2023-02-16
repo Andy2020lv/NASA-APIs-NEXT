@@ -80,7 +80,6 @@ export default function Events() {
       title={element.title}
     />
   ));
-  console.log({ limit });
   return (
     <>
       <NavBar

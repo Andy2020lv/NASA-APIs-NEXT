@@ -4,22 +4,10 @@ import styles from "../styles/Home.module.css";
 import Link from "next/link";
 import { send } from "process";
 type Props = {
-  limit?: number;
-  setLimit?: Function;
-  category?: string;
-  setCategory?: Function;
+  handleChange?: (newValue: string | number) => void;
 };
 
-export default function NavBar(props: Props) {
-  const [category, setCategory] = useState<string>("wildfires");
-  const [limit, setLimit] = useState<number>(props.limit!);
-
-  const sendProps = () => {
-    Router.push({
-      pathname: "/Events",
-      query: { limit, category },
-    });
-  };
+export default function NavBar({ handleChange }: Props) {
   //   useEffect(() => {
   //     sendProps();
   //   }, [sendProps]);
@@ -44,8 +32,7 @@ export default function NavBar(props: Props) {
               href="##"
               className="dropdown-item"
               onClick={() => {
-                props.setCategory && props.setCategory!("wildfires");
-                sendProps();
+                handleChange!("wildfires");
               }}
             >
               Wildfire
@@ -57,8 +44,7 @@ export default function NavBar(props: Props) {
               href="##"
               className="dropdown-item"
               onClick={() => {
-                props.setCategory && props.setCategory!("volcanoes");
-                sendProps();
+                handleChange!("volcanoes");
               }}
             >
               Volcanoes
@@ -81,8 +67,7 @@ export default function NavBar(props: Props) {
               href="##"
               className="dropdown-item"
               onClick={() => {
-                props.setLimit && props.setLimit(6);
-                sendProps();
+                handleChange!(6);
               }}
             >
               6
@@ -93,8 +78,7 @@ export default function NavBar(props: Props) {
               href="##"
               className="dropdown-item"
               onClick={() => {
-                props.setLimit && props.setLimit(12);
-                sendProps();
+                handleChange!(12);
               }}
             >
               12
@@ -105,8 +89,7 @@ export default function NavBar(props: Props) {
               href="##"
               className="dropdown-item"
               onClick={() => {
-                props.setLimit && props.setLimit(24);
-                sendProps();
+                handleChange!(24);
               }}
             >
               24

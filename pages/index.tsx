@@ -1,10 +1,8 @@
 import Head from "next/head";
-import Link from "next/link";
+import Alert from "../components/Alert";
 import Router from "next/router";
 import { useState, useEffect } from "react";
-import styles from "../styles/Home.module.css";
 import NavBar from "../components/NavBar";
-import PicDay from "./PicDay";
 
 // export interface CounterState {
 //   events: [Object];
@@ -29,6 +27,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <main>
+        {/* <Alert /> */}
         <NavBar />
       </main>
     </>

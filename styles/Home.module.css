@@ -36,3 +36,27 @@
   background-color: black !important;
   height: 3rem;
 }
+
+/* //////////////// Alert //////////////////// */
+
+.AlertContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.AlertContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.AlertSign {
+  max-width: 20rem;
+}
+
+/* @media (min-width: 40em) {
+  .AlertContainer{
+
+  }
+} */

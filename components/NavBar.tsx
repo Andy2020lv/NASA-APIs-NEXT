@@ -1,8 +1,6 @@
-import Router from "next/router";
-import { useState, useEffect } from "react";
+import Alert from "./Alert";
 import styles from "../styles/Home.module.css";
 import Link from "next/link";
-import { send } from "process";
 type Props = {
   handleChange?: (newValue: string | number) => void;
 };
@@ -108,10 +106,15 @@ export default function NavBar({ handleChange }: Props) {
                 Pic/day
               </Link>
             </div>
-          </li>
+          </li>{" "}
         </ul>
+
         {/* Might need to change the Link tag to an anchor tag because of some issue when going back in page history opn browser. */}
       </nav>
+      <div className={styles.AlertContainer}>
+        {" "}
+        <Alert />
+      </div>
     </div>
   );
 }

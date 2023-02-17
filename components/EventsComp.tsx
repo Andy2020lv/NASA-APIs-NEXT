@@ -2,7 +2,6 @@ import Image from "next/image";
 import styles from "../styles/events.module.css";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { fetchEarthNasa } from "../lib/fetchNasaAPIs";
 type Props = {
   category: string;
   coordinates: string[];
@@ -39,9 +38,8 @@ export default function EventsComp(props: Props) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // const response = await fetch(EARTH_API_URL + NASA_API_KEY);
-        // const data = await response.json();
-        const data = await fetchEarthNasa(lon, lat, ParsedDate);
+        const response = await fetch(EARTH_API_URL + NASA_API_KEY);
+        const data = await response.json();
         setEarthData(data);
       } catch (error) {
         console.error(error);
@@ -49,7 +47,7 @@ export default function EventsComp(props: Props) {
     };
 
     fetchData();
-  }, []);
+  }, [EARTH_API_URL]);
 
   if (!earthData) {
     return <p>Loading...</p>;

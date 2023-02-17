@@ -21,6 +21,7 @@
   border: 0.2rem solid;
   padding: 10px 20px;
   border-color: #141619;
+  text-decoration: none;
 }
 .seeEvents:hover {
   background-color: black;

@@ -17,6 +17,13 @@
 }
 
 .AlertButton {
+  font-weight: 800;
+  font-size: 1rem;
+  color: black;
+  border: 0.2rem solid;
+  padding: 10px 25px;
+  border-color: #141619;
+  margin-left: 2rem;
 }
 
 /* @media (min-width: 40em) {

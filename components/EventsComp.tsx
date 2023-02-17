@@ -2,6 +2,7 @@ import Image from "next/image";
 import styles from "../styles/events.module.css";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { fetchEarthNasa } from "../lib/fetchNasaAPIs";
 type Props = {
   category: string;
   coordinates: string[];
@@ -21,6 +22,7 @@ type earthDataType = {
 let lon: string;
 let lat: string;
 let ParsedDate: string;
+
 export default function EventsComp(props: Props) {
   if (Array.isArray(props.coordinates)) {
     [lon, lat] = props.coordinates!.map((x: string) => x);
@@ -37,23 +39,24 @@ export default function EventsComp(props: Props) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(EARTH_API_URL + NASA_API_KEY);
-        const data = await response.json();
+        // const response = await fetch(EARTH_API_URL + NASA_API_KEY);
+        // const data = await response.json();
+        const data = await fetchEarthNasa(lon, lat, ParsedDate);
         setEarthData(data);
       } catch (error) {
         console.error(error);
       }
     };
+
     fetchData();
-  }, [EARTH_API_URL]);
+  }, []);
+
   if (!earthData) {
     return <p>Loading...</p>;
   }
-  const encodeImg: string = encodeURIComponent(earthData.url);
+
   let title = props.title;
   let id = props.id;
-
-  const query = { id, lat, lon, ParsedDate };
 
   return (
     <div className="col-lg-4 col-md-6">
@@ -96,112 +99,3 @@ export default function EventsComp(props: Props) {
     </div>
   );
 }
-
-// import Image from "next/image";
-// import styles from "../styles/events.module.css";
-// import Link from "next/link";
-
-// type Props = {
-//   category: string;
-//   coordinates: string[];
-//   id: string;
-//   date: string;
-//   title: string;
-//   earthData: earthDataType;
-// };
-
-// type earthDataType = {
-//   id: string;
-//   resourse: {
-//     dataset: string;
-//     planet: string;
-//   };
-//   url: string;
-// };
-
-// export default function EventsComp({
-//   title,
-//   id,
-//   coordinates,
-//   date,
-//   earthData,
-// }: Props) {
-//   if (!earthData) {
-//     return <div>Loading...</div>;
-//   }
-
-//   const encodeImg: string = encodeURIComponent(earthData?.url);
-
-//   return (
-//     <div className="col-lg-4 col-md-6">
-//       <div className={styles.events}>
-//         <h1 style={{ maxWidth: "300px", textAlign: "center" }}>{title}</h1>
-//         <Image
-//           src={`${earthData.url}`}
-//           className={styles.sateliteImg}
-//           alt="event-img"
-//           width={300}
-//           height={200}
-//           layout="responsive"
-//         ></Image>
-//         <div className={styles.eventsCoordinates}>
-//           <p>Lat: {coordinates[1]}</p>
-//           <p>Lon: {coordinates[0]}</p>
-//         </div>
-//         <p>Date: {date}</p>
-//         <nav>
-//           <Link
-//             className={styles.goTo}
-//             href={{
-//               pathname: "/[event]",
-//               query: {
-//                 event: 0,
-//                 lat: coordinates[1],
-//                 lon: coordinates[0],
-//                 encodeImg,
-//                 title,
-//                 id,
-//               },
-//             }}
-//           >
-//             Go to the image
-//           </Link>
-//         </nav>
-//       </div>
-//     </div>
-//   );
-// }
-
-// export async function getServerSideProps(context) {
-//   const { lon, lat, date } = context.query;
-
-//   const EARTH_API_URL = `https://api.nasa.gov/planetary/earth/assets?lon=${lon}&lat=${lat}&date=${date}&dim=0.15&&api_key=`;
-//   const NASA_API_KEY = "ijz7SNQHjWKEmWblGRlmfPq3nCPhg6LuCNyjZcgb";
-
-//   try {
-//     const response = await fetch(EARTH_API_URL + NASA_API_KEY);
-//     const data = await response.json();
-//     return {
-//       props: {
-//         category: "Space",
-//         coordinates: [lon, lat],
-//         id: "1",
-//         date,
-//         title: "Satellite Image",
-//         earthData: data,
-//       },
-//     };
-//   } catch (error) {
-//     console.error(error);
-//     return {
-//       props: {
-//         category: "Space",
-//         coordinates: [lon, lat],
-//         id: "1",
-//         date,
-//         title: "Satellite Image",
-//         earthData: null,
-//       },
-//     };
-//   }
-// }

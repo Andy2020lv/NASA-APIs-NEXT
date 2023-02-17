@@ -2,9 +2,28 @@ import { useRouter } from "next/router";
 import styles from "../styles/events.module.css";
 import Image from "next/image";
 import NavBar from "../components/NavBar";
+import { fetchEarthNasa, fetchEonetsNasa } from "../lib/fetchNasaAPIs";
 
+type EONETEvent = {
+  id: string;
+  title: string;
+  category: string;
+  geometry: [
+    {
+      date: string;
+      coordinates: [string, string];
+    }
+  ];
+};
 type Props = {
   imgUrl: string;
+};
+
+type Params = {
+  event: string;
+};
+type Context = {
+  params: Params;
 };
 export default function Event(props: Props) {
   const router = useRouter();
@@ -50,41 +69,20 @@ export default function Event(props: Props) {
   );
 }
 
-export async function getStaticProps(context: any) {
-  // TRY TO USE USEROUTER TO CATCH THE VARIABLES FROM CONTEXT.QUERY
+export async function getStaticProps(context: Context) {
   const [lat, lon, ParsedDate] = context.params.event.split(",");
-  // console.log({ lat, lon, ParsedDate });
-  // console.log(context.params.event.toString().split(","));
-  console.log({ context });
-  console.log(context.params);
 
-  const EARTH_API_URL = `https://api.nasa.gov/planetary/earth/assets?lon=${lon}&lat=${lat}&date=${ParsedDate}&dim=0.15&&api_key=`;
-  const NASA_API_KEY = "ijz7SNQHjWKEmWblGRlmfPq3nCPhg6LuCNyjZcgb";
-
-  const earthDataResponse = await fetch(EARTH_API_URL + NASA_API_KEY);
-
-  const earthData = await earthDataResponse.json();
-  // console.log(earthData.url);
+  const earthData = await fetchEarthNasa(lon, lat, ParsedDate);
   const imgUrl = earthData.url;
 
   return { props: { imgUrl } };
 }
 
 export async function getStaticPaths() {
-  const NASA_API_KEY = "ijz7SNQHjWKEmWblGRlmfPq3nCPhg6LuCNyjZcgb";
+  const wildfiresData = await fetchEonetsNasa(24, "wildfires");
+  const volcanoesData = await fetchEonetsNasa(24, "volcanoes");
 
-  const wildfiresURL = `https://eonet.gsfc.nasa.gov/api/v3/events?start=2005-01-01&end=2021-12-31&limit=${24}&category=${"wildfires"}&key=${NASA_API_KEY}`;
-  const volcanoesURL = `https://eonet.gsfc.nasa.gov/api/v3/events?start=2005-01-01&end=2021-12-31&limit=${24}&category=${"volcanoes"}&key=${NASA_API_KEY}`;
-
-  const [wildfiresResponse, volcanoesResponse] = await Promise.all([
-    fetch(wildfiresURL),
-    fetch(volcanoesURL),
-  ]);
-
-  const wildfiresData = await wildfiresResponse.json();
-  const volcanoesData = await volcanoesResponse.json();
-
-  const wildfiresPaths = wildfiresData.events.map((event: any) => {
+  const wildfiresPaths = wildfiresData.events.map((event: EONETEvent) => {
     return {
       params: {
         event: `${event.geometry[0].coordinates[1]},${
@@ -94,7 +92,7 @@ export async function getStaticPaths() {
     };
   });
 
-  const volcanoesPaths = volcanoesData.events.map((event: any) => {
+  const volcanoesPaths = volcanoesData.events.map((event: EONETEvent) => {
     return {
       params: {
         event: `${event.geometry[0].coordinates[1]},${

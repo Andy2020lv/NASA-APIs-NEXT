@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import styles from "../styles/Home.module.css";
+import styles from "../styles/Alert.module.css";
 import LocationSVG from "../public/location";
+import { fetchEonetsNasa } from "../lib/fetchNasaAPIs";
 type DataType = {
   lat: number;
   lng: number;
@@ -9,8 +10,6 @@ type DataType = {
   sources?: [{ url: string }];
 };
 export default function Alert() {
-  const EONET_API_URL = "https://eonet.gsfc.nasa.gov/api/v3/events?";
-  const NASA_API_KEY = "ijz7SNQHjWKEmWblGRlmfPq3nCPhg6LuCNyjZcgb";
   const [isClose, setIsClose] = useState(false);
   const [eventName, setEventName] = useState("");
   const [eventSrc, setevEntSrc] = useState<string>();
@@ -43,26 +42,18 @@ export default function Alert() {
       setLocationRetrieved(false);
     }
   };
-  //   const getLocation = () => {
-  //     // Get the user's location
-  //     navigator.geolocation.getCurrentPosition((position) => {
-  //       setUserLocation({
-  //         lat: position.coords.latitude,
-  //         lng: position.coords.longitude,
-  //       });
-  //     });
-  //   };
+
   useEffect(() => {
     if (userLocation) {
       // Make a request to the NASA EONET API to get a list of natural events
-      fetch(`${EONET_API_URL}?key=${NASA_API_KEY}`)
-        .then((response) => response.json())
-        .then((data) => {
-          setNaturalEvents(data.events);
-        });
+
+      const fetchData = async () => {
+        const data = await fetchEonetsNasa();
+        setNaturalEvents(data.events);
+      };
+      fetchData();
     }
   }, [userLocation]);
-
   useEffect(() => {
     if (userLocation && naturalEvents.length > 0) {
       // Iterate over the list of natural events, and use the Haversine formula
@@ -115,7 +106,7 @@ export default function Alert() {
   return (
     <div className={styles.AlertContent} style={{ color: "white" }}>
       <div>
-        <button onClick={() => getLocation()}>
+        <button className={styles.AlertButton} onClick={() => getLocation()}>
           {<LocationSVG />}Track Events
         </button>
       </div>

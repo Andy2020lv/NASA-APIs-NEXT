@@ -1,0 +1,26 @@
+/* //////////////// Alert //////////////////// */
+
+.AlertContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.AlertContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.AlertSign {
+  max-width: 20rem;
+}
+
+.AlertButton {
+}
+
+/* @media (min-width: 40em) {
+    .AlertContainer{
+  
+    }
+  } */
